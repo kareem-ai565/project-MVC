@@ -33,13 +33,16 @@
                 <span class="label">Address:</span>
                 <span class="address">@Model.Address</span>
             </div>
+            <div>
+                <a class="btn btn-primary w-100" href="/Instructor/Edit/@Model.Id">edite</a>
+            </div>
         </div>
     </div>
 </div>
 
 <style>
     .instructor-container {
-        max-width: 1000px;
+        max-width: 1200px;
         margin: 0 auto;
      /*    padding: 20px; */
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -57,11 +60,12 @@
 
     .instructor-details {
         flex: 1;
-        padding-right: 20px;
+        padding-right: 10px;
+        height: 80%;
     }
 
         .instructor-details h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: black;
             margin-bottom: 30px;
             font-weight: 700;

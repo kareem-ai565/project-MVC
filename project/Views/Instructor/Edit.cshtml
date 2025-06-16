@@ -1,0 +1,50 @@
+﻿@using project.ModelViews
+@model NewInstructorVM
+@{
+    ViewData["Title"] = "Edit Instructor";
+}
+<h2>@ViewData["Title"]</h2>
+<form action="/Instructor/SaveEdit" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    
+    <div class="form-group mb-3">
+        <label>Instructor Name</label>
+        <input type="text" name="InstructorName" id="InstructorName" value="@Model.InstructorName" class="form form-check" rows="3">
+    </div>
+    <div class="form-group mb-3">
+        <label> Salary</label>
+        <input type="number" name="Salary" id="Salary" value="@Model.Salary" class="form form-check" rows="3">
+    </div>
+    <div class="form-group mb-3">
+        <label>Address</label>
+        <input type="text" name="Address" id="Address" value="@Model.Address" class="form form-check" rows="3">
+    </div>
+    <div class="form-group mb-3">
+        <label >Enter Image path</label>
+        <input type="text" name="Image" id="Image" value="@Model.Image" class="form form-check" rows="3">
+    </div>
+    <div class="form-group mb-3">
+        <label>Courses</label>
+        <select name="Courses" id="Courses" class="form form-control">
+            <option>-- Select Course --</option>
+            @foreach (Course course in Model.Courses)
+            {
+                <option value="@course.Id">@course.CourseName</option>
+            }
+        </select> 
+    </div>
+    <div class="form-group mb-3">
+        <label>Departments</label>
+        <select name="Departments" id="Departments" class="form form-control">
+            <option>-- Select Department --</option>
+            @foreach (Department dept in Model.Departments)
+            {
+                <option value="@dept.Id">@dept.Name</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Update" class="btn btn-success" />
+        <a href="/Instructor/ShowAllInstructors" class="btn btn-secondary">Back to List</a>
+    </div>
+</form>

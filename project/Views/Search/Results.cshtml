@@ -1,0 +1,27 @@
+﻿@model List<project.Models.Instructor>
+
+<h2>Search Results</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">No instructors found.</div>
+   
+}
+else
+{
+    <div>
+        @foreach (var instructor in Model)
+        {
+            <div class="card mb-2">
+                <div class="card-body">
+                    <h5>@instructor.InstructorName</h5>
+                    <p>Address: @instructor.Address</p>
+                    <p>Salary: @instructor.Salary</p>
+                    <p>Course: @instructor.Course?.CourseName</p>
+                    <p>Department: @instructor.Department?.Name</p>
+                </div>
+            </div>
+        }
+    </div>
+}
+
