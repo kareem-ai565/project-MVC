@@ -1,0 +1,42 @@
+﻿@model List<project.Models.Trainee>
+
+@{
+    ViewData["Title"] = "All Trainees";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">All Trainees</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Trainee Name</th>
+                <th>Adress</th>
+                <th>Image</th>
+                <th>Grade</th>
+                <th>Department</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var trainee in Model)
+            {
+                <tr>
+                    <td>@trainee.TraineeName</td>
+                    <td>@trainee.Address</td>
+                    <td>
+                        <img src="~/Images/Trainee/@trainee.Image" alt="Trainee Image" width="60" class="img-thumbnail" />
+                    </td>
+                    <td>@trainee.grade</td>
+                    <td>@trainee.Department?.Name</td>
+                 <td>   <a class="btn btn-primary btn-details w-100"
+                       asp-action="DetailsTrainee"
+                       asp-controller="Trainee"
+                       asp-route-tid="@trainee.Id">
+                        View Details
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,31 @@
+﻿@model List<project.ModelViews.CourseResultVM>
+
+@{
+    ViewData["Title"] = "CourseTrainees";
+}
+
+<h2>Trainees in @Model.First().CourseName</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Trainee Name</th>
+            <th>Grade</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var trainee in Model)
+        {
+            <tr>
+                <td>
+                    <img src="~/Images/Trainee/@trainee.urlImage" width="50" height="50" class="rounded-circle" />
+                </td>
+                <td>@trainee.TraineeName</td>
+                <td>@trainee.degree</td>
+                <td style="color:@trainee.color">@trainee.status</td>
+            </tr>
+        }
+    </tbody>
+</table>

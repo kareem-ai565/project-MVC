@@ -1,0 +1,190 @@
+﻿@model Instructor
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="instructor-container">
+    <div class="instructor-layout">
+        <div class="image-section">
+            <div class="instructor-image">
+                <div class="instructor-image-container">
+                    <img src="~/Images/Instructor/@Model.Image" class="instructor-image" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="instructor-details">
+            <h1> @Model.InstructorName</h1>
+
+            <div class="detail-row">
+                <span class="label">Instructor ID: </span> @Model.Id
+            </div>
+
+            <div class="detail-row">
+                <span class="label"> Department : </span><span class= "department"> @Model.Department?.Name</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Salary:</span> <span class="salary">$@Model.Salary</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Address:</span>
+                <span class="address">@Model.Address</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .instructor-container {
+        max-width: 1000px;
+        margin: 0 auto;
+     /*    padding: 20px; */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .instructor-layout {
+        display: flex;
+        gap: 40px;
+        align-items:start;
+        background: #fff;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        min-height: 500px;
+    }
+
+    .instructor-details {
+        flex: 1;
+        padding-right: 20px;
+    }
+
+        .instructor-details h1 {
+            font-size: 2.5rem;
+            color: black;
+            margin-bottom: 30px;
+            font-weight: 700;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 15px;
+        }
+
+    .detail-row {
+        color: black;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+
+    .label {
+        color: dimgrey;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+
+    .department {
+
+        color: black;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 1.2rem;
+
+    }
+
+    .salary {
+        color: black;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+
+    .address {
+        color: black;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+
+    .image-section {
+        flex: 0 0 400px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .instructor-image-container {
+        position: relative;
+        width: 350px;
+        height: 450px;
+        overflow: hidden;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .instructor-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+
+    }
+
+    /* Responsive Design */
+   @@media (max-width: 768px) {
+        .instructor-layout
+
+    {
+        flex-direction: column-reverse;
+        gap: 30px;
+        padding: 20px;
+    }
+
+    .image-section {
+        flex: none;
+        align-self: center;
+    }
+
+    .instructor-image-container {
+        width: 280px;
+        height: 350px;
+    }
+
+    .instructor-details {
+        padding-right: 0;
+    }
+
+        .instructor-details h1 {
+            font-size: 2rem;
+            text-align: center;
+        }
+
+    .detail-row {
+        text-align: center;
+    }
+
+    }
+
+    @@media (max-width: 480px) {
+        .instructor-container
+
+    {
+        padding: 10px;
+    }
+
+    .instructor-image-container {
+        width: 200px;
+        height: 300px;
+    }
+
+    .instructor-details h1 {
+        font-size: 1.8rem;
+    }
+
+    }
+    </style>
+

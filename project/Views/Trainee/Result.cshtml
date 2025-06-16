@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Mvc.RazorPages;
+@using project.ModelViews
+@model project.ModelViews.CourseResultVM
+
+@{
+    ViewData ["Title"] = "CourseResultVM";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg p-4" style="border-left: 10px solid @Model.color;">
+        <div class="row">
+            <div class="col-md-3">
+                <img src="~/Images/Trainee/@Model.urlImage" class="img-fluid rounded-circle" alt="Trainee Image" />
+            </div>
+            <div class="col-md-9">
+                <h2>@Model.TraineeName</h2>
+                <p><strong>Course:</strong> @Model.CourseName</p>
+                <p><strong>Grade:</strong> @Model.degree / @Model.minDegree</p>
+                <p><strong>Status:</strong> <span style="color:@Model.color;">@Model.status</span></p>
+            </div>
+        </div>
+    </div>
+</div>

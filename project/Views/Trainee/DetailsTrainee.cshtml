@@ -1,0 +1,37 @@
+﻿@model project.ModelViews.TraineeWithResultsVM
+
+@{
+    ViewData["Title"] = "Trainee Details";
+}
+
+<div class="container mt-4">
+    <h2>@Model.TraineeName</h2>
+    <img src="~/Images/Trainee/@Model.Image" width="200" class="img-thumbnail mb-3" />
+    <p><strong>Address:</strong> @Model.Address</p>
+    <p><strong>Department:</strong> @Model.DepartmentName</p>
+    <p><strong>Grade:</strong> @Model.Grade</p>
+
+    <h4>Course Results</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Degree</th>
+                <th>Min Degree</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var result in Model.CourseResults)
+            {
+                <tr>
+                    <td>@result.CourseName</td>
+                    <td>@result.degree</td>
+                    <td>@result.minDegree</td>
+                    <td style="color:@result.color;">@result.status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
