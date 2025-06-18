@@ -6,26 +6,30 @@
 
 <h2 class="mt-4">@ViewData["Title"]</h2>
 
-<form asp-action="SaveCourse" method="post" class="mt-4">
+<form asp-action="SaveCourse" method="post" class="mt-4" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <div class="form-group mb-3">
-        <label asp-for="CourseName" class="form-label"></label>
-        <input asp-for="CourseName" class="form-control" />
-        <span asp-validation-for="CourseName" class="text-danger"></span>
-    </div>
+        @Html.AntiForgeryToken()
 
-    <div class="form-group mb-3">
-        <label asp-for="Degree" class="form-label"></label>
-        <input asp-for="Degree" class="form-control" type="number" />
-        <span asp-validation-for="Degree" class="text-danger"></span>
-    </div>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <div class="form-group mb-3">
-        <label asp-for="MinDegree" class="form-label"></label>
-        <input asp-for="MinDegree" class="form-control" type="number" />
-        <span asp-validation-for="MinDegree" class="text-danger"></span>
-    </div>
+        <div class="form-group mb-3">
+            <label asp-for="CourseName" class="form-label"></label>
+            <input asp-for="CourseName" class="form-control" />
+            <span asp-validation-for="CourseName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Degree" class="form-label"></label>
+            <input asp-for="Degree" class="form-control" type="number" />
+            <span asp-validation-for="Degree" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="MinDegree" class="form-label"></label>
+            <input asp-for="MinDegree" class="form-control" type="number" />
+            <span asp-validation-for="MinDegree" class="text-danger"></span>
+        </div>
 
     <div class="form-group mb-3">
         <label asp-for="Hours" class="form-label"></label>
@@ -41,12 +45,6 @@
         <span asp-validation-for="DepartmentId" class="text-danger"></span>
     </div>
 
-@*     <div class="form-group mb-3">
-        <label asp-for="Pic" class="form-label">Image Name (Optional)</label>
-        <input asp-for="Pic" class="form-control" />
-        <span asp-validation-for="Pic" class="text-danger"></span>
-    </div> *@
-
     <div class="form-group mb-3">
         <label class="form-label">Course Image (Optional)</label>
         <input type="file" name="ImageFile" class="form-control" accept="image/*" onchange="previewImage(this)" />
@@ -55,13 +53,10 @@
         <!-- Hidden field to store the filename -->
         <input asp-for="Pic" type="hidden" />
     </div>
-    @* Optional: show the image if Pic has a value *@
-@*     @if (!string.IsNullOrEmpty(Model.Pic))
-    {
-        <div class="mb-3">
-            <img src="~/Images/Courses/@Model.Pic" class="card-img-top" style="height:200px; object-fit:cover;" alt="Course Image" />
-        </div>
-    } *@
 
     <button type="submit" class="btn btn-primary">Save Course</button>
 </form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

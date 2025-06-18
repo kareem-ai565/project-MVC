@@ -55,53 +55,138 @@ namespace project.Controllers
 
             return View("AddCourse", vm);
         }
+        //[HttpPost]
+        //public IActionResult SaveCourse(string CourseName, int? Degree, int? MinDegree, int? Hours, int DepartmentId, string? Pic)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        ModelState.AddModelError("", "Please fill all fields correctly.");
+
+        //        var course = new CourseVM
+        //        {
+        //            CourseName = CourseName,
+        //            Degree = Degree,
+        //            MinDegree = MinDegree,
+        //            Hours = Hours,
+        //            Pic = Pic,
+        //            DepartmentId = DepartmentId,
+        //            Departments = _context.Departments.ToList()
+        //        };
+
+        //        return View("AddCourse", course);
+        //    }
+
+        //    var course = new Course
+        //    {
+        //        CourseName = CourseName,
+        //        Degree = Degree,
+        //        MinDegree = MinDegree,
+        //        Hours = Hours,
+        //        DepartmentId = DepartmentId
+        //    };
+
+        //    _context.Courses.Add(course);
+        //    _context.SaveChanges();
+
+        //    return RedirectToAction("ShowAllCourses");
+        //}
+
         [HttpPost]
-        public IActionResult SaveCourse(string CourseName, int? Degree, int? MinDegree, int? Hours, int DepartmentId, string? Pic)
+        public IActionResult SaveCourse(CourseVM course)
         {
-            // Basic validation
-            if (string.IsNullOrEmpty(CourseName) || Degree == null || MinDegree == null || Hours == null || DepartmentId <= 0)
+            if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Please fill all fields correctly.");
-
-                var vm = new CourseVM
-                {
-                    CourseName = CourseName,
-                    Degree = Degree,
-                    MinDegree = MinDegree,
-                    Hours = Hours,
-                    Pic = Pic,
-                    DepartmentId = DepartmentId,
-                    Departments = _context.Departments.ToList()
-                };
-
-                return View("AddCourse", vm);
+                // Reload Departments list if validation fails
+                course.Departments = _context.Departments.ToList();
+                return View("AddCourse", course);
             }
 
-            var course = new Course
+            var newCourse = new Course
             {
-                CourseName = CourseName,
-                Degree = Degree,
-                MinDegree = MinDegree,
-                Hours = Hours,
-                DepartmentId = DepartmentId
+                CourseName = course.CourseName,
+                Degree = course.Degree,
+                MinDegree = course.MinDegree,
+                Hours = course.Hours,
+                DepartmentId = course.DepartmentId,
+                // Pic: handle separately if you're saving uploaded files
             };
 
-            _context.Courses.Add(course);
+            _context.Courses.Add(newCourse);
             _context.SaveChanges();
 
             return RedirectToAction("ShowAllCourses");
         }
 
-        public JsonResult IsCourseNameUnique(string courseName)
+        public IActionResult Details(int id)
         {
-            bool exists = _context.Courses.Any(c => c.CourseName == courseName);
-            return Json(!exists);
+            var course = _context.Courses
+                .Include(c => c.Department)
+                .FirstOrDefault(c => c.Id == id);
+
+            if (course == null)
+                return NotFound();
+
+            var vm = new CourseVM
+            {
+                Id = course.Id,
+                CourseName = course.CourseName,
+                Degree = course.Degree,
+                MinDegree = course.MinDegree,
+                Hours = course.Hours,
+                Pic = $"{course.CourseName}.jpg",
+
+
+                DepartmentId = course.DepartmentId,
+                DepartmentName = course.Department?.Name
+            };
+
+            return View(vm);
         }
 
-        public JsonResult IsMinDegreeValid(int minDegree, int degree)
+        public IActionResult Delete(int id)
         {
-            return Json(minDegree < degree);
+            var course = _context.Courses.FirstOrDefault(c => c.Id == id);
+            if (course == null)
+                return NotFound();
+
+            return View(course); 
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConfirmDelete(int id)
+        {
+            var course = _context.Courses.FirstOrDefault(c => c.Id == id);
+            if (course == null)
+                return NotFound();
+
+            _context.Courses.Remove(course);
+            _context.SaveChanges();
+
+            return RedirectToAction("ShowAllCourses");
+        }
+
+
+
+        [AcceptVerbs("GET")]
+        public IActionResult ValidateMinDegree(int? MinDegree, int? Degree)
+        {
+            if (MinDegree >= Degree)
+            {
+                return Json("Minimum degree must be less than degree.");
+            }
+            return Json(true);
+        }
+
+
+
+
+
+
+
+
+
+
 
 
     }

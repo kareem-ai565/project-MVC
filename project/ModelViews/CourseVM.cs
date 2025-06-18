@@ -36,82 +36,91 @@
 using project.Models;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-//using project.ValidationAttributes.project.Attributes;
 
 namespace project.ModelViews
 {
     public class CourseVM
     {
-        public int Id;
+        public int Id { get; set; }
 
-        [UniqueCourseName]
-        [Display(Name = "Course Name")]
-        public string? CourseName;
+        [Required(ErrorMessage = "Course name is required.")]
+        [StringLength(20, MinimumLength = 2, ErrorMessage = "Course name must be between 2 and 20 characters.")]
+        public string? CourseName { get; set; }
 
-        [Display(Name = "Degree")]
-        [Range(50, 100, ErrorMessage = "Degree must be between 50 and 100.")]
-        public int? Degree;
+        [Required(ErrorMessage = "Degree is required.")]
+        [Range(0, 100, ErrorMessage = "Degree must be between 0 and 100.")]
+        public int? Degree { get; set; }
 
         [Display(Name = "Minimum Degree")]
-        public int? MinDegree;
+        public int? MinDegree { get; set; }
 
         [Display(Name = "Credit Hours")]
-        [DivisibleBy(3, ErrorMessage = "Credit hours must be divisible by 3.")]
-        public int? Hours;
+        [DivisibleByThree]
+        public int? Hours { get; set; }
 
         [Display(Name = "Department")]
-        public string? DepartmentName;
+        public string? DepartmentName { get; set; }
 
-        [Display(Name = "Department")]
-        public int DepartmentId;
+        public int DepartmentId { get; set; }
 
-        public List<Department>? Departments;
+        public List<Department>? Departments { get; set; }
 
         [Display(Name = "Course Image")]
-        public string? Pic;
+        public string? Pic { get; set; }
     }
 
-    public class UniqueCourseNameAttribute : ValidationAttribute
+    public class CourseNameValidationAttribute : ValidationAttribute
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             var courseName = value as string;
-
-            if (string.IsNullOrWhiteSpace(courseName))
-                return new ValidationResult("Course name is required.");
-
-            if (courseName.Length < 2 || courseName.Length > 20)
+            if (string.IsNullOrWhiteSpace(courseName) || courseName.Length < 2 || courseName.Length > 20)
+            {
                 return new ValidationResult("Course name must be between 2 and 20 characters.");
+            }
 
-            var db = validationContext.GetService<ProjectContext>();
-            if (db == null)
-                throw new InvalidOperationException("Could not resolve ProjectContext from services.");
+            // Check uniqueness
+            var context = (project.Models.ProjectContext)validationContext.GetService(typeof(project.Models.ProjectContext))!;
+            var vm = (project.ModelViews.CourseVM)validationContext.ObjectInstance;
 
-            bool exists = db.Courses.Any(c => c.CourseName == courseName);
+            var exists = context.Courses.Any(c => c.CourseName == courseName && c.Id != vm.Id);
             if (exists)
+            {
                 return new ValidationResult("Course name must be unique.");
+            }
 
             return ValidationResult.Success;
         }
     }
 
-    public class DivisibleByAttribute : ValidationAttribute
-    {
-        private readonly int _divisor;
-        public DivisibleByAttribute(int divisor)
-        {
-            _divisor = divisor;
-        }
 
+    public class DegreeRangeAttribute : ValidationAttribute
+    {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            if (value == null) return ValidationResult.Success;
-
-            if (value is int intValue && intValue % _divisor == 0)
-                return ValidationResult.Success;
-
-            return new ValidationResult(ErrorMessage ?? $"Value must be divisible by {_divisor}.");
+            if (value is int degree)
+            {
+                if (degree <= 50 || degree >= 100)
+                {
+                    return new ValidationResult("Degree must be between 50 and 100.");
+                }
+            }
+            return ValidationResult.Success;
         }
     }
-}
+    public class DivisibleByThreeAttribute : ValidationAttribute
+    {
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+        {
+            if (value is int hours && hours % 3 != 0)
+            {
+                return new ValidationResult("Hours must be divisible by 3.");
+            }
+            return ValidationResult.Success;
+        }
 
+
+
+
+    }
+}

@@ -1,0 +1,26 @@
+﻿@model project.ModelViews.CourseVM
+
+@{
+    ViewData["Title"] = "Course Details";
+}
+
+<div class="card mt-4">
+    <div class="card-header bg-primary text-white">
+        <h3>@Model.CourseName</h3>
+    </div>
+    <div class="card-body">
+        <p><strong>Degree:</strong> @Model.Degree</p>
+        <p><strong>Minimum Degree:</strong> @Model.MinDegree</p>
+        <p><strong>Credit Hours:</strong> @Model.Hours</p>
+        <p><strong>Department:</strong> @Model.DepartmentName</p>
+        @if (!string.IsNullOrEmpty(Model.Pic))
+        {
+            <img src="~/Images/Course/@Model.Pic" alt="Course Image" class="img-fluid rounded" />
+        }
+    </div>
+    <div class="card-footer">
+@*         <a href="/Courses/ShowAllCourses" class="btn btn-secondary">Back to Courses</a> *@
+        <a asp-controller="Courses" asp-action="ShowAllCourses" class="btn btn-secondary">Back to Courses</a>
+
+</div>
+</div>

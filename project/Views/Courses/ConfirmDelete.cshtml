@@ -1,0 +1,9 @@
+﻿@model project.Models.Course
+
+<h2>Delete Course</h2>
+<p>Are you sure you want to delete the course: <strong>@Model.CourseName</strong>?</p>
+
+<form method="post" asp-action="ConfirmDelete" asp-route-id="@Model.Id">
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a asp-action="ShowAllCourses" class="btn btn-secondary">Cancel</a>
+</form>
