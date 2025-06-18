@@ -10,7 +10,6 @@ namespace project.Controllers
     {
         private readonly ProjectContext _context;
 
-        // Inject the database context through constructor
         public InstructorController(ProjectContext context)
         {
             _context = context;
@@ -154,6 +153,30 @@ namespace project.Controllers
             _context.SaveChanges();
             return RedirectToAction("ShowAllInstructors");
         }
+
+        public IActionResult Delete(int id)
+        {
+            var instructor = _context.instructors.FirstOrDefault(i => i.Id == id);
+            if (instructor == null)
+                return NotFound();
+
+            return View(instructor);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConfirmDelete(int id)
+        {
+            var instructor = _context.instructors.FirstOrDefault(i => i.Id == id);
+            if (instructor == null)
+                return NotFound();
+
+            _context.instructors.Remove(instructor); // Correct DbSet
+            _context.SaveChanges();
+
+            return RedirectToAction("ShowAllInstructors");
+        }
+
+
 
         ////==============================================================/////
 
